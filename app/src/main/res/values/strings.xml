@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Notification Practice</string>
+    <string name="firebase_notification">Firebase Notification</string>
+    <string name="internal_notification">Internal Notification</string>
 </resources>
