@@ -41,7 +41,6 @@ class InternalNotificationActivity : AppCompatActivity() {
             )
 
             val largeIcon = BitmapFactory.decodeResource(resources, R.drawable.bell)
-            Log.d("PUI", "$largeIcon")
 
             val notification = NotificationCompat.Builder(this, getString(R.string.channel1))
                 .setSmallIcon(R.drawable.ic_baseline_notifications_24)
@@ -71,6 +70,18 @@ class InternalNotificationActivity : AppCompatActivity() {
             val notification = NotificationCompat.Builder(this, getString(R.string.channel2))
                 .setSmallIcon(R.drawable.ic_baseline_notifications_active_24)
                 .setContentTitle(title)
+                .setStyle(
+                    NotificationCompat.InboxStyle()
+                        .addLine("This is Line 1")
+                        .addLine("This is Line 2")
+                        .addLine("This is Line 3")
+                        .addLine("This is Line 4")
+                        .addLine("This is Line 5")
+                        .addLine("This is Line 6")
+                        .addLine("This is Line 7")
+                        .setSummaryText("Messages")
+                        .setBigContentTitle("Inbox Title")
+                )
                 .setContentText(message)
                 .build()
 
