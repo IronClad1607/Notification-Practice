@@ -1,5 +1,6 @@
 package com.ironclad.notificationpractice
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -23,6 +24,11 @@ class MainActivity : AppCompatActivity() {
 
                     Log.d("PUI", "Token: $token")
                 }
+        }
+
+        btnInternalNotification.setOnClickListener {
+            val notificationIntent = Intent(this, InternalNotificationActivity::class.java)
+            startActivity(notificationIntent)
         }
     }
 }
