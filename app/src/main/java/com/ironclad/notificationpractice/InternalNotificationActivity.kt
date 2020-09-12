@@ -2,10 +2,12 @@ package com.ironclad.notificationpractice
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.ironclad.notificationpractice.receivers.ToastReceiver
 import kotlinx.android.synthetic.main.activity_internal_notification.*
 
 class InternalNotificationActivity : AppCompatActivity() {
@@ -26,11 +28,25 @@ class InternalNotificationActivity : AppCompatActivity() {
                 activityIntent,
                 0
             )
+
+            val broadcastIntent = Intent(this, ToastReceiver::class.java)
+            broadcastIntent.putExtra("toastMessage", message)
+            val actionIntent = PendingIntent.getBroadcast(
+                this,
+                1605,
+                broadcastIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+
             val notification = NotificationCompat.Builder(this, getString(R.string.channel1))
                 .setSmallIcon(R.drawable.ic_baseline_notifications_24)
                 .setContentTitle(title)
                 .setContentText(message)
+                .setColor(Color.BLUE)
                 .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true)
+                .addAction(R.drawable.ic_baseline_notifications_24, "Toast", actionIntent)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .build()
 
