@@ -5,4 +5,6 @@
     <string name="title">Title:</string>
     <string name="send_on_channel_1">Send on Channel 1</string>
     <string name="send_on_channel_2">Send on Channel 2</string>
+    <string name="channel1">channel1</string>
+    <string name="channel2">channel2</string>
 </resources>
