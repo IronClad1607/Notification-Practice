@@ -2,9 +2,11 @@ package com.ironclad.notificationpractice
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.ironclad.notificationpractice.receivers.ToastReceiver
@@ -38,13 +40,23 @@ class InternalNotificationActivity : AppCompatActivity() {
                 PendingIntent.FLAG_UPDATE_CURRENT
             )
 
+            val largeIcon = BitmapFactory.decodeResource(resources, R.drawable.bell)
+            Log.d("PUI", "$largeIcon")
+
             val notification = NotificationCompat.Builder(this, getString(R.string.channel1))
                 .setSmallIcon(R.drawable.ic_baseline_notifications_24)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setColor(Color.BLUE)
+                .setLargeIcon(largeIcon)
                 .setContentIntent(contentIntent)
                 .setAutoCancel(true)
+                .setStyle(
+                    NotificationCompat.BigTextStyle()
+                        .bigText(getString(R.string.bigDummyText))
+                        .setSummaryText("Summary Text")
+                        .setBigContentTitle("Big Content Title")
+                )
                 .setOnlyAlertOnce(true)
                 .addAction(R.drawable.ic_baseline_notifications_24, "Toast", actionIntent)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
