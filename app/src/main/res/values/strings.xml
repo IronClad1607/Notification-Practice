@@ -2,4 +2,7 @@
     <string name="app_name">Notification Practice</string>
     <string name="firebase_notification">Firebase Notification</string>
     <string name="internal_notification">Internal Notification</string>
+    <string name="title">Title:</string>
+    <string name="send_on_channel_1">Send on Channel 1</string>
+    <string name="send_on_channel_2">Send on Channel 2</string>
 </resources>
