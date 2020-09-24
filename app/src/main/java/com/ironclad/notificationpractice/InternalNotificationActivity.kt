@@ -4,15 +4,18 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.ironclad.notificationpractice.receivers.ToastReceiver
 import kotlinx.android.synthetic.main.activity_internal_notification.*
 
 class InternalNotificationActivity : AppCompatActivity() {
+
+    @RequiresApi(Build.VERSION_CODES.CUPCAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_internal_notification)
@@ -31,33 +34,21 @@ class InternalNotificationActivity : AppCompatActivity() {
                 0
             )
 
-            val broadcastIntent = Intent(this, ToastReceiver::class.java)
-            broadcastIntent.putExtra("toastMessage", message)
-            val actionIntent = PendingIntent.getBroadcast(
-                this,
-                1605,
-                broadcastIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
-
-            val largeIcon = BitmapFactory.decodeResource(resources, R.drawable.bell)
+            val picture = BitmapFactory.decodeResource(resources, R.drawable.bell)
 
             val notification = NotificationCompat.Builder(this, getString(R.string.channel1))
                 .setSmallIcon(R.drawable.ic_baseline_notifications_24)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setColor(Color.BLUE)
-                .setLargeIcon(largeIcon)
+                .setLargeIcon(picture)
                 .setContentIntent(contentIntent)
                 .setAutoCancel(true)
                 .setStyle(
-                    NotificationCompat.BigTextStyle()
-                        .bigText(getString(R.string.bigDummyText))
-                        .setSummaryText("Summary Text")
-                        .setBigContentTitle("Big Content Title")
+                    NotificationCompat.BigPictureStyle()
+                        .bigPicture(picture)
+                        .bigLargeIcon(null)
                 )
                 .setOnlyAlertOnce(true)
-                .addAction(R.drawable.ic_baseline_notifications_24, "Toast", actionIntent)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .build()
 
