@@ -1,10 +1,13 @@
 package com.ironclad.notificationpractice
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
+import android.app.Person
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.media.session.MediaSessionCompat
@@ -13,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
+import androidx.core.graphics.drawable.IconCompat
 import com.ironclad.notificationpractice.receivers.DirectReplyReceiver
 import kotlinx.android.synthetic.main.activity_internal_notification.*
 
@@ -20,7 +24,7 @@ class InternalNotificationActivity : AppCompatActivity() {
 
     private lateinit var mediaSession: MediaSessionCompat
 
-    @RequiresApi(Build.VERSION_CODES.CUPCAKE)
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_internal_notification)
@@ -84,6 +88,8 @@ class InternalNotificationActivity : AppCompatActivity() {
     companion object {
         val messages = ArrayList<Message>()
 
+        @SuppressLint("RestrictedApi")
+        @RequiresApi(Build.VERSION_CODES.P)
         fun sendMessageNotification(context: Context) {
             val activityIntent = Intent(context, InternalNotificationActivity::class.java)
             val contentIntent = PendingIntent.getActivity(
@@ -109,14 +115,28 @@ class InternalNotificationActivity : AppCompatActivity() {
                     .build()
 
 
-            val messagingStyle = NotificationCompat.MessagingStyle("Me")
+            val messagingStyle =
+                NotificationCompat.MessagingStyle(
+                    androidx.core.app.Person.Builder().setName("Me")
+                        .setIcon(
+                            IconCompat.createFromIcon(
+                                context,
+                                Icon.createWithResource(context, R.drawable.ic_launcher_background)
+                            )
+                        ).build()
+                )
             messagingStyle.conversationTitle = "Group Chat"
 
-            for (message in Companion.messages) {
+
+
+            for (message in messages) {
+                val person = androidx.core.app.Person.Builder()
+                    .setName(message.sender)
+                    .build()
                 val notificationMessage = NotificationCompat.MessagingStyle.Message(
                     message.text,
                     message.timestamp,
-                    message.sender
+                    person
                 )
                 messagingStyle.addMessage(notificationMessage)
             }
