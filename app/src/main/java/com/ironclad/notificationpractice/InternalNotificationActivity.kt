@@ -3,22 +3,26 @@ package com.ironclad.notificationpractice
 import android.app.PendingIntent
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.media.session.MediaSessionCompat
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.ironclad.notificationpractice.receivers.ToastReceiver
+import androidx.media.MediaSessionManager
 import kotlinx.android.synthetic.main.activity_internal_notification.*
 
 class InternalNotificationActivity : AppCompatActivity() {
+
+    private lateinit var mediaSession: MediaSessionCompat
 
     @RequiresApi(Build.VERSION_CODES.CUPCAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_internal_notification)
+
+        mediaSession = MediaSessionCompat(this, "tag")
 
         val notificationManager = NotificationManagerCompat.from(this)
 
@@ -58,21 +62,24 @@ class InternalNotificationActivity : AppCompatActivity() {
         btnSendOnChannel2.setOnClickListener {
             val title = etTitle.text.toString()
             val message = etMessage.text.toString()
+
+            val artwork = BitmapFactory.decodeResource(resources, R.drawable.bell)
+
             val notification = NotificationCompat.Builder(this, getString(R.string.channel2))
                 .setSmallIcon(R.drawable.ic_baseline_notifications_active_24)
                 .setContentTitle(title)
+                .setLargeIcon(artwork)
+                .addAction(R.drawable.ic_baseline_thumb_down, "Dislike", null)
+                .addAction(R.drawable.ic_baseline_skip_previous_24, "Previous", null)
+                .addAction(R.drawable.ic_baseline_pause_24, "Play/Pause", null)
+                .addAction(R.drawable.ic_baseline_skip_next_24, "Next", null)
+                .addAction(R.drawable.ic_baseline_thumb_up_24, "Like", null)
                 .setStyle(
-                    NotificationCompat.InboxStyle()
-                        .addLine("This is Line 1")
-                        .addLine("This is Line 2")
-                        .addLine("This is Line 3")
-                        .addLine("This is Line 4")
-                        .addLine("This is Line 5")
-                        .addLine("This is Line 6")
-                        .addLine("This is Line 7")
-                        .setSummaryText("Messages")
-                        .setBigContentTitle("Inbox Title")
+                    androidx.media.app.NotificationCompat.MediaStyle()
+                        .setShowActionsInCompactView(1, 2, 3)
+                        .setMediaSession(mediaSession.sessionToken)
                 )
+                .setSubText("Sub Text 1")
                 .setContentText(message)
                 .build()
 
