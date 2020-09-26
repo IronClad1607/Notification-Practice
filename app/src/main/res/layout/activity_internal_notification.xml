@@ -35,5 +35,12 @@
         android:id="@+id/btnSendOnChannel2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:text="@string/send_on_channel_2" />
+
+    <Button
+        android:id="@+id/btnSendOnChannel3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/messaging_style_notification" />
 </LinearLayout>

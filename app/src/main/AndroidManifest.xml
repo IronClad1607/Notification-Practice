@@ -27,7 +27,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".receivers.ToastReceiver" />
+        <receiver android:name=".receivers.DirectReplyReceiver" />
     </application>
 
 </manifest>

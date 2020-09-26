@@ -1,8 +1,10 @@
 package com.ironclad.notificationpractice
 
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.media.session.MediaSessionCompat
@@ -10,7 +12,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.media.MediaSessionManager
+import androidx.core.app.RemoteInput
+import com.ironclad.notificationpractice.receivers.DirectReplyReceiver
 import kotlinx.android.synthetic.main.activity_internal_notification.*
 
 class InternalNotificationActivity : AppCompatActivity() {
@@ -24,39 +27,30 @@ class InternalNotificationActivity : AppCompatActivity() {
 
         mediaSession = MediaSessionCompat(this, "tag")
 
+        messages.add(Message("Good Morning!", "Jim"))
+        messages.add(Message("Hello", null))
+        messages.add(Message("Hi", "Sidhi"))
+        messages.add(
+            Message(
+                "Hey",
+                "JJ"
+            )
+        )
+        messages.add(Message("Good Morning", "Satvik"))
+        messages.add(Message("Good Morning!", null))
+        messages.add(Message("How are you?", "Jim"))
+        messages.add(
+            Message(
+                "I'm Fine",
+                "JJ"
+            )
+        )
+
+
         val notificationManager = NotificationManagerCompat.from(this)
 
-        btnSendOnChannel1.setOnClickListener {
-            val title = etTitle.text.toString()
-            val message = etMessage.text.toString()
-
-            val activityIntent = Intent(this, InternalNotificationActivity::class.java)
-            val contentIntent = PendingIntent.getActivity(
-                this,
-                1605,
-                activityIntent,
-                0
-            )
-
-            val picture = BitmapFactory.decodeResource(resources, R.drawable.bell)
-
-            val notification = NotificationCompat.Builder(this, getString(R.string.channel1))
-                .setSmallIcon(R.drawable.ic_baseline_notifications_24)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setLargeIcon(picture)
-                .setContentIntent(contentIntent)
-                .setAutoCancel(true)
-                .setStyle(
-                    NotificationCompat.BigPictureStyle()
-                        .bigPicture(picture)
-                        .bigLargeIcon(null)
-                )
-                .setOnlyAlertOnce(true)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .build()
-
-            notificationManager.notify(1, notification)
+        btnSendOnChannel3.setOnClickListener {
+            sendMessageNotification(this)
         }
 
         btnSendOnChannel2.setOnClickListener {
@@ -84,6 +78,62 @@ class InternalNotificationActivity : AppCompatActivity() {
                 .build()
 
             notificationManager.notify(2, notification)
+        }
+    }
+
+    companion object {
+        val messages = ArrayList<Message>()
+
+        fun sendMessageNotification(context: Context) {
+            val activityIntent = Intent(context, InternalNotificationActivity::class.java)
+            val contentIntent = PendingIntent.getActivity(
+                context,
+                1605,
+                activityIntent,
+                0
+            )
+
+            val remoteInput = RemoteInput.Builder("keyReply")
+                .setLabel("Your Message ...")
+                .build()
+
+            val replyIntent = Intent(context, DirectReplyReceiver::class.java)
+            val replyPendingIntent = PendingIntent.getBroadcast(context, 1605, replyIntent, 0)
+
+            val replyAction =
+                NotificationCompat.Action.Builder(
+                    R.drawable.ic_reply,
+                    "Reply",
+                    replyPendingIntent
+                ).addRemoteInput(remoteInput)
+                    .build()
+
+
+            val messagingStyle = NotificationCompat.MessagingStyle("Me")
+            messagingStyle.conversationTitle = "Group Chat"
+
+            for (message in Companion.messages) {
+                val notificationMessage = NotificationCompat.MessagingStyle.Message(
+                    message.text,
+                    message.timestamp,
+                    message.sender
+                )
+                messagingStyle.addMessage(notificationMessage)
+            }
+
+            val notification = NotificationCompat.Builder(context, "channel1")
+                .setSmallIcon(R.drawable.ic_baseline_notifications_24)
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .addAction(replyAction)
+                .setColor(Color.BLUE)
+                .setStyle(messagingStyle)
+                .setOnlyAlertOnce(true)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build()
+
+            val notificationManager = NotificationManagerCompat.from(context)
+            notificationManager.notify(1, notification)
         }
     }
 }
