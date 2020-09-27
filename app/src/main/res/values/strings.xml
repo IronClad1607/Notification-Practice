@@ -12,4 +12,5 @@
     <string name="messaging_style_notification">Messaging Style Notification</string>
     <string name="notification_progress">Notification Progress</string>
     <string name="notification_group">Notification Group</string>
+    <string name="alarmed_notification">Alarmed Notification</string>
 </resources>

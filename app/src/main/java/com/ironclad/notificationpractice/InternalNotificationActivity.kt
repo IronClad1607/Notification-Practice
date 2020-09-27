@@ -129,6 +129,11 @@ class InternalNotificationActivity : AppCompatActivity() {
             }
         }
 
+        btnSendOnChannel6.setOnClickListener {
+            val alarmedIntent = Intent(this, AlarmedActivity::class.java)
+            startActivity(alarmedIntent)
+        }
+
     }
 
     companion object {
