@@ -115,6 +115,20 @@ class InternalNotificationActivity : AppCompatActivity() {
             }).start()
         }
 
+        btnSendOnChannel5.setOnClickListener {
+            val notification = NotificationCompat.Builder(this, getString(R.string.channel2))
+                .setSmallIcon(R.drawable.ic_baseline_notifications_active_24)
+                .setContentTitle("Title")
+                .setContentText("Message")
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .build()
+
+            for (i in 0 until 5) {
+                SystemClock.sleep(2000)
+                notificationManager.notify(i, notification)
+            }
+        }
+
     }
 
     companion object {
