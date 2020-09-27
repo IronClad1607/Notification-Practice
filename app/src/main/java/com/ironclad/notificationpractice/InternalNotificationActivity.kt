@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -83,6 +84,37 @@ class InternalNotificationActivity : AppCompatActivity() {
 
             notificationManager.notify(2, notification)
         }
+
+        btnSendOnChannel4.setOnClickListener {
+            val progressMax = 100;
+            val notification = NotificationCompat.Builder(this, "channel3")
+                .setSmallIcon(R.drawable.ic_baseline_pause_24)
+                .setContentTitle("Download")
+                .setContentText("Download in Progress")
+                .setOngoing(true)
+                .setOnlyAlertOnce(true)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setProgress(progressMax, 0, false)
+
+
+            notificationManager.notify(3, notification.build())
+
+            Thread(Runnable {
+                SystemClock.sleep(2000)
+                for (progress in 0..progressMax step 20) {
+                    notification.setProgress(progressMax, progress, false)
+                    notificationManager.notify(3, notification.build())
+                    SystemClock.sleep(1000)
+                }
+
+                notification.setContentText("Download finished")
+                    .setOngoing(false)
+                    .setProgress(0, 0, false)
+
+                notificationManager.notify(3, notification.build())
+            }).start()
+        }
+
     }
 
     companion object {

@@ -42,5 +42,13 @@
         android:id="@+id/btnSendOnChannel3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:text="@string/messaging_style_notification" />
+
+    <Button
+        android:id="@+id/btnSendOnChannel4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="@string/notification_progress" />
 </LinearLayout>
