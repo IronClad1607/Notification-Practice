@@ -94,7 +94,7 @@ class InternalNotificationActivity : AppCompatActivity() {
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setProgress(progressMax, 0, false)
+                .setProgress(progressMax, 0, true)
 
 
             notificationManager.notify(3, notification.build())
@@ -102,8 +102,8 @@ class InternalNotificationActivity : AppCompatActivity() {
             Thread(Runnable {
                 SystemClock.sleep(2000)
                 for (progress in 0..progressMax step 20) {
-                    notification.setProgress(progressMax, progress, false)
-                    notificationManager.notify(3, notification.build())
+//                    notification.setProgress(progressMax, progress, false)
+//                    notificationManager.notify(3, notification.build())
                     SystemClock.sleep(1000)
                 }
 
