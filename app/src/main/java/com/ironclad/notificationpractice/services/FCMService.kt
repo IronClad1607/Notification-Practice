@@ -6,7 +6,7 @@ import com.google.firebase.messaging.RemoteMessage
 
 class FCMService : FirebaseMessagingService() {
     override fun onMessageReceived(p0: RemoteMessage) {
-        Log.d("PUI", "From:${p0.from}")
+        Log.d("PUI", "From:${p0}")
 
         if (p0.data.isNotEmpty()) {
             Log.d("PUI", "Message data Payload: ${p0.data}")
